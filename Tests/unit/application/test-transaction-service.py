@@ -1,4 +1,5 @@
 from application.services.transaction_services import TransactionService
+from domain.entities.account import AccountType, CheckingAccount
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
 from infrastructure.repositories.transaction_repository_impl import InMemoryTransactionRepository
 
