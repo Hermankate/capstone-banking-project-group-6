@@ -1,4 +1,5 @@
-from application.services.account_creation_service import AccountCreationService
+from application.services.account_creation_services import AccountCreationService
+from domain.entities.account import AccountType
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
 
 def test_create_savings_account_with_insufficient_initial_deposit():
