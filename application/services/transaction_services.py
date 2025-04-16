@@ -12,7 +12,7 @@ class TransactionService:
             raise ValueError(f"Account {account_id} not found")
         account.deposit(amount)
         self.account_repo.update_account(account)
-        return self._create_transaction(account_id, amount, TransactionType.DEPOSIT)  # ✅ Correct
+        return self._create_transaction(account_id, amount, TransactionType.DEPOSIT)  
 
     def withdraw(self, account_id: str, amount: float) -> Transaction:
         account = self.account_repo.get_account_by_id(account_id)
@@ -20,7 +20,7 @@ class TransactionService:
             raise ValueError(f"Account {account_id} not found")
         account.withdraw(amount)
         self.account_repo.update_account(account)
-        return self._create_transaction(account_id, amount, TransactionType.WITHDRAW)  # ✅ Correct
+        return self._create_transaction(account_id, amount, TransactionType.WITHDRAW)  
     def _create_transaction(
         self, 
         account_id: str, 
@@ -31,6 +31,6 @@ class TransactionService:
             transaction_id=str(uuid4()),
             account_id=account_id,
             amount=amount,
-            transaction_type=txn_type  # ✅ Ensure the Transaction entity has this field
+            transaction_type=txn_type  # Ensure the Transaction entity has this field
         )
-        return self.transaction_repo.save_transaction(transaction)  # ✅ Returns Transaction object
+        return self.transaction_repo.save_transaction(transaction)  # Returns Transaction object

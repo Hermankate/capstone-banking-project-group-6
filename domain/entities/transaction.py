@@ -11,10 +11,10 @@ class Transaction:
         transaction_id: str, 
         account_id: str, 
         amount: float, 
-        transaction_type: TransactionType  # ✅ Correct attribute name
+        transaction_type: TransactionType  
     ):
         self.transaction_id = transaction_id
         self.account_id = account_id
         self.amount = amount
-        self.type = transaction_type  # ✅ Maps to TransactionType enum
+        self.type = transaction_type  
         self.timestamp = datetime.now()
