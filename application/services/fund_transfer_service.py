@@ -1,4 +1,4 @@
-# application/services/fund_transfer_service.py
+
 from uuid import uuid4
 from domain.entities.transaction import TransactionType
 from domain.services.transfer_service import TransferService
