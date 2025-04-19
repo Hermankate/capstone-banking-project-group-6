@@ -3,6 +3,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from application.services.fund_transfer_service import FundTransferService
 
+from fastapi import Depends
+from application.services.fund_transfer_service import FundTransferService
+
+def get_transfer_service():
+    pass 
+
 router = APIRouter(prefix="/transfers")
 
 class TransferRequest(BaseModel):

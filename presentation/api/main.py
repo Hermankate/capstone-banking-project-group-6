@@ -31,21 +31,60 @@
 #         transactions.get_transaction_service: lambda: transaction_service
 #     })
 # presentation/api/main.py
-from application.services.fund_transfer_service import FundTransferService
-from application.services.logging_service import log_transaction
-from application.services.notification_service import NotificationService, EmailNotification, SMSNotification
-from domain.services import transaction_service
+# from application.services.fund_transfer_service import FundTransferService
+# from application.services.logging_service import log_transaction
+# from application.services.notification_service import NotificationService, EmailNotification, SMSNotification
+# from domain.services import transaction_service
+# from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
+# from infrastructure.repositories.transaction_repository_impl import InMemoryTransactionRepository
 
-# Add to startup
-transfer_service = FundTransferService(account_repo, transaction_repo)
-notification_service = NotificationService()
-notification_service.add_observer(EmailNotification())
-notification_service.add_observer(SMSNotification())
+# account_repo = InMemoryAccountRepository()
+# transaction_repo = InMemoryTransactionRepository()
 
-# Attach notification to transaction completion
-def after_transaction(transaction):
-    notification_service.notify_all(transaction)
+# # Add to startup
+# transfer_service = FundTransferService(account_repo, transaction_repo)
+# notification_service = NotificationService()
+# notification_service.add_observer(EmailNotification())
+# notification_service.add_observer(SMSNotification())
 
-# Decorate TransactionService methods with logging and notifications
-transaction_service.deposit = log_transaction(transaction_service.deposit)
-transaction_service.withdraw = log_transaction(transaction_service.withdraw)
+# # Attach notification to transaction completion
+# def after_transaction(transaction):
+#     notification_service.notify_all(transaction)
+
+# # Decorate TransactionService methods with logging and notifications
+# transaction_service.deposit = log_transaction(transaction_service.deposit)
+# transaction_service.withdraw = log_transaction(transaction_service.withdraw)
+# presentation/api/main.py
+
+from fastapi import FastAPI
+from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
+from infrastructure.repositories.transaction_repository_impl import InMemoryTransactionRepository
+from application.services.account_creation_services import AccountCreationService
+from application.services.transaction_services import TransactionService
+from application.services.fund_transfer_service import FundTransferService  # ✅ Import new service
+from presentation.api.routes import accounts, transactions, transfers  # Import new routes
+
+app = FastAPI()
+
+# Initialize repositories FIRST
+account_repo = InMemoryAccountRepository()
+transaction_repo = InMemoryTransactionRepository()
+
+# Initialize services AFTER repositories
+account_creation_service = AccountCreationService(account_repo)
+transaction_service = TransactionService(account_repo, transaction_repo)
+transfer_service = FundTransferService(account_repo, transaction_repo)  
+
+# Include routers
+app.include_router(accounts.router)
+app.include_router(transactions.router)
+app.include_router(transfers.router)  # Add transfers routes
+
+# Dependency injection
+@app.on_event("startup")
+async def startup_event():
+    app.dependency_overrides.update({
+        accounts.get_account_creation_service: lambda: account_creation_service,
+        transactions.get_transaction_service: lambda: transaction_service,
+        transfers.get_transfer_service: lambda: transfer_service  # Add transfer service
+    })
