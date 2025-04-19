@@ -1,7 +1,7 @@
 
 from uuid import uuid4
-from domain.entities.transaction import TransactionType
-from domain.services.transfer_service import TransferService
+from domain.entities.transaction import Transaction, TransactionType
+from domain.services.transaction_service import TransferService
 
 class FundTransferService:
     def __init__(self, account_repo, transaction_repo):

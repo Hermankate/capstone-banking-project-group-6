@@ -32,7 +32,9 @@
 #     })
 # presentation/api/main.py
 from application.services.fund_transfer_service import FundTransferService
+from application.services.logging_service import log_transaction
 from application.services.notification_service import NotificationService, EmailNotification, SMSNotification
+from domain.services import transaction_service
 
 # Add to startup
 transfer_service = FundTransferService(account_repo, transaction_repo)
