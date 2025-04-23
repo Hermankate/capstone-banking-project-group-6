@@ -1,6 +1,10 @@
 from application.interfaces.account_repository import AccountRepository
 from domain.entities.account import Account
 
+# infrastructure/repositories/account_repository_impl.py
+from application.interfaces.account_repository import AccountRepository
+from domain.entities.account import Account  # Only import Account
+
 class InMemoryAccountRepository(AccountRepository):
     def __init__(self):
         self.accounts = {}
