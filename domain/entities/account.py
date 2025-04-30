@@ -10,24 +10,6 @@
 #     ACTIVE = "active"
 #     CLOSED = "closed"
 
-# class Account(ABC):
-#     def __init__(self, account_id: str, account_type: AccountType, 
-#                  balance: float = 0.0, status: AccountStatus = AccountStatus.ACTIVE):
-#         self.account_id = account_id
-#         self.account_type = account_type
-#         self.balance = balance
-#         self.status = status
-#         self.creation_date = datetime.now()
-
-#     def deposit(self, amount: float):
-#         if amount <= 0:
-#             raise ValueError("Deposit amount must be positive")
-#         self.balance += amount
-
-#     @abstractmethod
-#     def withdraw(self, amount: float):
-#         pass
-
 
 from abc import ABC, abstractmethod
 from datetime import datetime
