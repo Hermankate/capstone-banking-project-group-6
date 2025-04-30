@@ -1,14 +1,3 @@
-# from abc import ABC, abstractmethod
-# from datetime import datetime
-# from enum import Enum
-
-# class AccountType(Enum):
-#     CHECKING = "CHECKING"
-#     SAVINGS = "SAVINGS"
-
-# class AccountStatus(Enum):
-#     ACTIVE = "active"
-#     CLOSED = "closed"
 
 
 from abc import ABC, abstractmethod
