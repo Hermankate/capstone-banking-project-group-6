@@ -35,15 +35,6 @@
 # from application.services.logging_service import log_transaction
 # from application.services.notification_service import NotificationService, EmailNotification, SMSNotification
 # from domain.services import transaction_service
-# from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
-# from infrastructure.repositories.transaction_repository_impl import InMemoryTransactionRepository
-
-# account_repo = InMemoryAccountRepository()
-# transaction_repo = InMemoryTransactionRepository()
-
-# # Add to startup
-# transfer_service = FundTransferService(account_repo, transaction_repo)
-
 
 from fastapi import FastAPI
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
