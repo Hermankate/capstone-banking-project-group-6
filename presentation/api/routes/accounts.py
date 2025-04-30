@@ -1,14 +1,7 @@
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from domain.entities.account import SavingsAccount, CheckingAccount  # ✅ Remove AccountType
 from application.services.account_creation_services import AccountCreationService
-from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
-def get_account_creation_service():
-    # Initialize the repository
-    account_repo = InMemoryAccountRepository()
-    # Return the service instance
-    return AccountCreationService(account_repo)
 
 router = APIRouter(prefix="/accounts")
 
