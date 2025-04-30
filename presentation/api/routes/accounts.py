@@ -23,17 +23,6 @@
 #     return {
 #         "account_id": account_id,
 #         "account_type": account.account_type,  # Still returns "SAVINGS" or "CHECKING"
-#         "balance": account.balance
-#     }
-
-# # class CreateAccountRequest(BaseModel):
-# #     account_type: AccountType
-# #     initial_deposit: float = 0.0
-
-# # class AccountResponse(BaseModel):
-# #     account_id: str
-# #     account_type: AccountType
-# #     balance: float
 
 
 from fastapi import APIRouter, Depends, HTTPException, status
