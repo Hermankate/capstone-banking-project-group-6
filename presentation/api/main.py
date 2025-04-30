@@ -1,19 +1,3 @@
-# from fastapi import FastAPI
-# from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
-# from infrastructure.repositories.transaction_repository_impl import InMemoryTransactionRepository
-# from application.services.account_creation_services import AccountCreationService
-# from application.services.transaction_services import TransactionService
-# from presentation.api.routes import accounts, transactions  # Critical import
-
-# app = FastAPI()
-# @app.get("/")
-# def root():
-#     return {"message": "Banking API is running!"}
-
-
-# # Initialize repositories and services
-# account_repo = InMemoryAccountRepository()
-
 
 from fastapi import FastAPI
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
