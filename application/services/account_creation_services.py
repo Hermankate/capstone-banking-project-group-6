@@ -1,5 +1,3 @@
-# from uuid import uuid4
-# from domain.entities.account import Account, SavingsAccount, CheckingAccount, AccountType
 
 from uuid import uuid4
 from domain.entities.account import Account, SavingsAccount, CheckingAccount
