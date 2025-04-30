@@ -35,15 +35,6 @@
 # #     account_type: AccountType
 # #     balance: float
 
-# # def get_account_creation_service():
-# #     pass  # Implementation provided in main.py
-
-# # @router.post("/", status_code=status.HTTP_201_CREATED, response_model=AccountResponse)
-# # def create_account(
-# #     request: CreateAccountRequest,
-# #     service: AccountCreationService = Depends(get_account_creation_service)
-# # ):
-# #     try:
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
