@@ -31,10 +31,6 @@
 #         transactions.get_transaction_service: lambda: transaction_service
 #     })
 # presentation/api/main.py
-# from application.services.fund_transfer_service import FundTransferService
-# from application.services.logging_service import log_transaction
-# from application.services.notification_service import NotificationService, EmailNotification, SMSNotification
-# from domain.services import transaction_service
 
 from fastapi import FastAPI
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
