@@ -13,15 +13,6 @@
 
 # # Initialize repositories and services
 # account_repo = InMemoryAccountRepository()
-# transaction_repo = InMemoryTransactionRepository()
-
-# account_creation_service = AccountCreationService(account_repo)
-# transaction_service = TransactionService(account_repo, transaction_repo)
-
-
-# # Include routers from the routes module
-# app.include_router(accounts.router)
-# app.include_router(transactions.router)
 
 
 from fastapi import FastAPI
