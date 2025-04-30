@@ -48,8 +48,6 @@
 # notification_service.add_observer(SMSNotification())
 
 # # Attach notification to transaction completion
-# def after_transaction(transaction):
-#     notification_service.notify_all(transaction)
 
 
 
