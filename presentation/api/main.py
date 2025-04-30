@@ -51,10 +51,7 @@
 # def after_transaction(transaction):
 #     notification_service.notify_all(transaction)
 
-# # Decorate TransactionService methods with logging and notifications
-# transaction_service.deposit = log_transaction(transaction_service.deposit)
-# transaction_service.withdraw = log_transaction(transaction_service.withdraw)
-# presentation/api/main.py
+
 
 from fastapi import FastAPI
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository

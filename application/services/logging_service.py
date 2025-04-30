@@ -1,6 +1,8 @@
 # application/services/logging_service.py
 import logging
 
+from domain.entities.transaction import Transaction
+
 logging.basicConfig(filename='transactions.log', level=logging.INFO)
 
 def log_transaction(func):
