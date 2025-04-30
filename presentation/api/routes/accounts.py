@@ -3,26 +3,6 @@
 # from domain.entities.account import AccountType, CheckingAccount, SavingsAccount
 # from application.services.account_creation_services import AccountCreationService
 # # router = APIRouter(prefix="/accounts")
-# # from pydantic import BaseModel
-# # from fastapi import APIRouter
-
-# router = APIRouter(prefix="/accounts")
-
-# class CreateAccountRequest(BaseModel):
-#     account_type: str  # "SAVINGS" or "CHECKING"
-#     initial_deposit: float = 0.0
-
-# @router.post("/", status_code=201)
-# def create_account(request: CreateAccountRequest, service: AccountCreationService):
-#     account_class = (
-#         SavingsAccount if request.account_type == "SAVINGS" 
-#         else CheckingAccount
-#     )
-#     account_id = service.create_account(account_class, request.initial_deposit)
-#     account = service.account_repo.get_account_by_id(account_id)
-#     return {
-#         "account_id": account_id,
-#         "account_type": account.account_type,  # Still returns "SAVINGS" or "CHECKING"
 
 
 from fastapi import APIRouter, Depends, HTTPException, status
