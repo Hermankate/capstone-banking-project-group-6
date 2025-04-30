@@ -28,21 +28,6 @@
 #     def withdraw(self, amount: float):
 #         pass
 
-# class SavingsAccount(Account):
-#     MIN_BALANCE = 100.0
-    
-#     def withdraw(self, amount: float):
-#         if self.balance - amount < self.MIN_BALANCE:
-#             raise ValueError(f"Withdrawal would go below minimum balance of {self.MIN_BALANCE}")
-#         self.balance -= amount
-
-# class CheckingAccount(Account):
-#     OVERDRAFT_LIMIT = 500.0
-    
-#     def withdraw(self, amount: float):
-#         if self.balance - amount < -self.OVERDRAFT_LIMIT:
-#             raise ValueError("Exceeds overdraft limit")
-#         self.balance -= amount
 
 from abc import ABC, abstractmethod
 from datetime import datetime
