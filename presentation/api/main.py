@@ -43,12 +43,6 @@
 
 # # Add to startup
 # transfer_service = FundTransferService(account_repo, transaction_repo)
-# notification_service = NotificationService()
-# notification_service.add_observer(EmailNotification())
-# notification_service.add_observer(SMSNotification())
-
-# # Attach notification to transaction completion
-
 
 
 from fastapi import FastAPI
