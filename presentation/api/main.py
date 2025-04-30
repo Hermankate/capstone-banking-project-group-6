@@ -23,14 +23,6 @@
 # app.include_router(accounts.router)
 # app.include_router(transactions.router)
 
-# # Override dependencies at startup
-# @app.on_event("startup")
-# async def startup_event():
-#     app.dependency_overrides.update({
-#         accounts.get_account_creation_service: lambda: account_creation_service,
-#         transactions.get_transaction_service: lambda: transaction_service
-#     })
-# presentation/api/main.py
 
 from fastapi import FastAPI
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
