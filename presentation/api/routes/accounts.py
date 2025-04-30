@@ -44,16 +44,6 @@
 # #     service: AccountCreationService = Depends(get_account_creation_service)
 # # ):
 # #     try:
-# #         account_id = service.create_account(request.account_type, request.initial_deposit)
-# #         account = service.account_repo.get_account_by_id(account_id)
-# #         return {
-# #             "account_id": account_id,
-# #             "account_type": account.account_type,
-# #             "balance": account.balance
-# #         }
-# #     except ValueError as e:
-# #         raise HTTPException(status_code=400, detail=str(e))
-
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
