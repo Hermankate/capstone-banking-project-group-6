@@ -1,9 +1,3 @@
-# from fastapi import APIRouter, Depends, HTTPException, status
-# from pydantic import BaseModel
-# from domain.entities.account import AccountType, CheckingAccount, SavingsAccount
-# from application.services.account_creation_services import AccountCreationService
-# # router = APIRouter(prefix="/accounts")
-
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
