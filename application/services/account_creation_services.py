@@ -1,4 +1,4 @@
-
+# application/services/account_creation_service.py
 from uuid import uuid4
 from domain.entities.account import Account, SavingsAccount, CheckingAccount
 
@@ -9,7 +9,7 @@ class AccountCreationService:
 
     def create_account(
         self, 
-        account_class: type[Account],  # SavingsAccount or CheckingAccount
+        account_class: type[Account],  # Accept SavingsAccount or CheckingAccount
         initial_deposit: float = 0.0
     ) -> str:
         if account_class == SavingsAccount and initial_deposit < self.min_savings_deposit:
