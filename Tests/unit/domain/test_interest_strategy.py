@@ -1,4 +1,8 @@
 # tests/unit/domain/test_interest_strategy.py
+from domain.entities.interest_strategy import SimpleInterestStrategy
+from domain.entities.limit import LimitType, TransactionLimit
+
+
 def test_simple_interest():
     strategy = SimpleInterestStrategy(0.05)  # 5% annual rate
     interest = strategy.calculate_interest(1000.0, 365)  # 1 year
