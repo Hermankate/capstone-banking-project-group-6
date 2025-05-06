@@ -6,7 +6,7 @@ router = APIRouter(prefix="/limits")
 
 class LimitRequest(BaseModel):
     account_id: str
-    limit_type: str  # "DAILY" or "MONTHLY"
+    limit_type: str  
     max_amount: float
 
 @router.post("/set")
