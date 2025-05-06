@@ -27,7 +27,7 @@ class Account(ABC):
     def withdraw(self, amount: float):
         pass
 
-    # Add abstract property to enforce account_type in subclasses
+
     @property
     @abstractmethod
     def account_type(self) -> str:
