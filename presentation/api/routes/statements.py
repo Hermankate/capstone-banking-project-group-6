@@ -8,7 +8,7 @@ class StatementRequest(BaseModel):
     account_id: str
     month: int
     year: int
-    format: str  # "pdf" or "csv"
+    format: str  
 
 @router.post("/generate")
 def generate_statement(
