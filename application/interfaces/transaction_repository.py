@@ -3,7 +3,7 @@ from domain.entities.transaction import Transaction
 
 class TransactionRepository(ABC):
     @abstractmethod
-    def save_transaction(self, transaction: Transaction) -> Transaction:  # ✅ Return Transaction, not str
+    def save_transaction(self, transaction: Transaction) -> Transaction: 
         pass
     
     @abstractmethod
