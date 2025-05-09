@@ -1,3 +1,20 @@
+import csv
+from datetime import datetime
+from domain.entities.statement import MonthlyStatement
+
+class CSVStatementExporter:
+    def export(self, statement: MonthlyStatement, filename: str):
+        with open(filename, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["Month", "Starting Balance", "Ending Balance", "Interest Earned"])
+            writer.writerow([
+                statement.month,
+                statement.starting_balance,
+                statement.ending_balance,
+                statement.interest_earned
+            ])
+
+
 # import csv
 # from reportlab.pdfgen import canvas
 # from domain.entities.statement import MonthlyStatement
