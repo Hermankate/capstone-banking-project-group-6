@@ -31,3 +31,4 @@ async def startup_event():
         transactions.get_transaction_service: lambda: transaction_service,
         transfers.get_transfer_service: lambda: transfer_service  # Add transfer service
     })
+
