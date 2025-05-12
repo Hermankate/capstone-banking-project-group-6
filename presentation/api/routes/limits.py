@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from application.services.limit_service import LimitService
+from application.services.limit_service import LimitService, get_limit_service
 
 router = APIRouter(prefix="/limits")
 

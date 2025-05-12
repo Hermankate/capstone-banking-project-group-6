@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from datetime import datetime
-from application.services.interest_service import InterestService
+from application.services.interest_service import InterestService, get_interest_service
 
 router = APIRouter(prefix="/interest")
 

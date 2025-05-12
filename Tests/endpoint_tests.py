@@ -27,6 +27,7 @@ def test_deposit(account_id: str):
         print("Deposit Response:", response.json())
     except Exception as e:
         print("Error:", e)
+
 def test_withdraw(account_id: str):
     # Test withdrawing $20 from the account
     payload = {"amount": 20.0}
@@ -45,6 +46,13 @@ def test_get_transactions(account_id: str):
     # Test fetching transaction history
     response = requests.get(f"{BASE_URL}/accounts/{account_id}/transactions")
     print("Transactions Response:", response.json())
+
+def test_transfer_funds():
+    response = requests.post(
+        f"{BASE_URL}/accounts/transfer",
+        json={"sourceAccountId": "acc1", "destinationAccountId": "acc2", "amount": 100.0}
+    )
+    assert response.status_code == 200
 
 if __name__ == "__main__":
     # Run tests in sequence
