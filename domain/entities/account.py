@@ -17,6 +17,7 @@ class Account(ABC):
         self.balance = balance
         self.status = status
         self.creation_date = datetime.now()
+        self.interest_strategy = None  # Add this field
 
     def deposit(self, amount: float):
         if amount <= 0:
