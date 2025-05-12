@@ -1,5 +1,5 @@
 from application.interfaces.interest_strategy_repo import InterestStrategyRepository
-from domain.entities.interest_strategy import InterestStrategy
+from domain.entities.interest_strategy import CompoundInterestStrategy, InterestStrategy, SimpleInterestStrategy
 
 class InMemoryInterestStrategyRepository(InterestStrategyRepository):
     def __init__(self):

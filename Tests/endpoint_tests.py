@@ -48,10 +48,14 @@ def test_get_transactions(account_id: str):
     print("Transactions Response:", response.json())
 
 def test_transfer_funds():
-    response = requests.post(
-        f"{BASE_URL}/accounts/transfer",
-        json={"sourceAccountId": "acc1", "destinationAccountId": "acc2", "amount": 100.0}
-    )
+    # Test transferring funds between accounts
+    payload = {
+        "sourceAccountId": "acc1",
+        "destinationAccountId": "acc2",
+        "amount": 100.0
+    }
+    response = requests.post(f"{BASE_URL}/accounts/transfer", json=payload)
+    print("Transfer Funds Response:", response.json())
     assert response.status_code == 200
 
 if __name__ == "__main__":
@@ -61,3 +65,4 @@ if __name__ == "__main__":
     test_withdraw(account_id)
     test_get_balance(account_id)
     test_get_transactions(account_id)
+    test_transfer_funds()

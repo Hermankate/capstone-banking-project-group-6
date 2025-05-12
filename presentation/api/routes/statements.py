@@ -12,7 +12,7 @@ class StatementRequest(BaseModel):
     account_id: str
     month: int
     year: int
-    format: str  
+    format: str  # "pdf" or "csv"
 
 @router.post("/generate")
 def generate_statement(
@@ -20,14 +20,25 @@ def generate_statement(
     service: StatementService = Depends(get_statement_service)
 ):
     try:
+        # Validate the format
+        if request.format not in ["pdf", "csv"]:
+            raise HTTPException(status_code=400, detail="Invalid format. Use 'pdf' or 'csv'.")
+
+        # Generate the statement
         statement = service.generate_statement(request.account_id, request.month, request.year)
         exporter = PDFStatementExporter() if request.format == "pdf" else CSVStatementExporter()
         
         # Ensure the 'statements' directory exists
         os.makedirs("statements", exist_ok=True)
         
+        # Define the file path
         file_path = f"statements/{request.account_id}_{request.month}_{request.year}.{request.format}"
+        
+        # Export the statement
         exporter.export(statement, file_path)
-        return {"message": f"Statement generated at {file_path}"}
+        
+        return {"message": f"Statement generated successfully at {file_path}"}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
