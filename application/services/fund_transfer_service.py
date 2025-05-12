@@ -1,4 +1,3 @@
-
 from uuid import uuid4
 from domain.entities.transaction import Transaction, TransactionType
 from domain.services.transaction_service import TransferService
@@ -21,20 +20,24 @@ class FundTransferService:
         if not source or not dest:
             raise ValueError("Invalid account ID(s)")
         
-        # Perform transfer
-        TransferService.transfer(source, dest, amount)
-        
-        # Update accounts
-        self.account_repo.update_account(source)
-        self.account_repo.update_account(dest)
-        
-        # Log transfer transaction
-        transaction = self._create_transfer_transaction(
-            source_account_id, 
-            destination_account_id, 
-            amount
-        )
-        return transaction.transaction_id
+        try:
+            # Perform transfer
+            TransferService.transfer(source, dest, amount)
+            
+            # Update accounts
+            self.account_repo.update_account(source)
+            self.account_repo.update_account(dest)
+            
+            # Log transfer transaction
+            transaction = self._create_transfer_transaction(
+                source_account_id, 
+                destination_account_id, 
+                amount
+            )
+            return transaction.transaction_id
+        except Exception as e:
+            # Rollback logic (if applicable)...
+            raise ValueError(f"Transfer failed: {str(e)}")
 
     def _create_transfer_transaction(self, source_id, dest_id, amount):
         transaction = Transaction(
