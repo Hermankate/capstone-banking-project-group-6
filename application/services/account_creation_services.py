@@ -1,5 +1,4 @@
-
-from domain.entities.account import Account, AccountType
+from domain.entities.account import Account, AccountType, SavingsAccount, CheckingAccount
 from application.interfaces.account_repository import AccountRepository
 
 class AccountCreationService:
@@ -19,23 +18,14 @@ class AccountCreationService:
         return self.account_repository.create_account(account)
 
 
-# # application/services/account_creation_service.py
-# from uuid import uuid4
-# from domain.entities.account import Account, SavingsAccount, CheckingAccount
+from domain.entities.account import SavingsAccount, CheckingAccount
 
-# class AccountCreationService:
-#     def __init__(self, account_repository):
-#         self.account_repo = account_repository
-#         self.min_savings_deposit = 100.0
-
-#     def create_account(
-#         self, 
-#         account_class: type[Account],  # Accept SavingsAccount or CheckingAccount
-#         initial_deposit: float = 0.0
-#     ) -> str:
-#         if account_class == SavingsAccount and initial_deposit < self.min_savings_deposit:
-#             raise ValueError(f"Minimum initial deposit for savings is {self.min_savings_deposit}")
-            
-#         account_id = str(uuid4())
-#         account = account_class(account_id=account_id, balance=initial_deposit)
-#         return self.account_repo.create_account(account)
+class AccountFactory:
+    @staticmethod
+    def create_account(account_type: str, account_id: str, initial_deposit: float):
+        if account_type == "SAVINGS":
+            return SavingsAccount(account_id, initial_deposit)
+        elif account_type == "CHECKING":
+            return CheckingAccount(account_id, initial_deposit)
+        else:
+            raise ValueError(f"Unsupported account type: {account_type}")
