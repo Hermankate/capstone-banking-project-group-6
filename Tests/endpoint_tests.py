@@ -4,38 +4,33 @@ import requests
 BASE_URL = "http://127.0.0.1:8000"
 
 def test_create_account():
-    # Test creating a savings account
     payload = {
         "account_type": "SAVINGS",
         "initial_deposit": 100.0
     }
     response = requests.post(f"{BASE_URL}/accounts", json=payload)
     print("Create Account Response:", response.json())
+
+    if response.status_code != 201:
+        raise Exception(f"Failed to create account: {response.json()}")
+
     return response.json()["account_id"]
 
 def test_deposit(account_id: str):
     payload = {"amount": 50.0}
-    response = requests.post(
-        f"{BASE_URL}/accounts/{account_id}/deposit",
-        json=payload
-    )
-    # Print status code and raw text for debugging
-    print("Status Code:", response.status_code)
-    print("Raw Response:", response.text)
-    try:
-        response.raise_for_status()  # Raise HTTP errors
-        print("Deposit Response:", response.json())
-    except Exception as e:
-        print("Error:", e)
+    response = requests.post(f"{BASE_URL}/accounts/{account_id}/deposit", json=payload)
+    print("Deposit Response:", response.json())
+
+    if response.status_code != 200:
+        raise Exception(f"Failed to deposit: {response.json()}")
 
 def test_withdraw(account_id: str):
-    # Test withdrawing $20 from the account
     payload = {"amount": 20.0}
-    response = requests.post(
-        f"{BASE_URL}/accounts/{account_id}/withdraw",
-        json=payload
-    )
+    response = requests.post(f"{BASE_URL}/accounts/{account_id}/withdraw", json=payload)
     print("Withdraw Response:", response.json())
+
+    if response.status_code != 200:
+        raise Exception(f"Failed to withdraw: {response.json()}")
 
 def test_get_balance(account_id: str):
     # Test fetching the account balance

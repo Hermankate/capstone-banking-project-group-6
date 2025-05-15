@@ -1,11 +1,12 @@
-
 from fastapi import FastAPI
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
 from infrastructure.repositories.transaction_repository_impl import InMemoryTransactionRepository
 from application.services.account_creation_services import AccountCreationService
 from application.services.transaction_services import TransactionService
 from application.services.fund_transfer_service import FundTransferService  # ✅ Import new service
+from application.services.limit_service import LimitService  # Import LimitService
 from presentation.api.routes import accounts, transactions, transfers  # Import new routes
+from application.services.notification_service import NotificationService, EmailNotification, SMSNotification
 
 app = FastAPI()
 
@@ -15,8 +16,12 @@ transaction_repo = InMemoryTransactionRepository()
 
 # Initialize services AFTER repositories
 account_creation_service = AccountCreationService(account_repo)
-transaction_service = TransactionService(account_repo, transaction_repo)
 transfer_service = FundTransferService(account_repo, transaction_repo)  
+limit_service = LimitService(account_repo)  # Initialize LimitService
+notification_service = NotificationService()
+notification_service.add_observer(EmailNotification())  # Add email observer
+notification_service.add_observer(SMSNotification())    # Add SMS observer
+transaction_service = TransactionService(account_repo, transaction_repo, limit_service, notification_service)  # Initialize TransactionService with LimitService and NotificationService
 
 # Include routers
 app.include_router(accounts.router)

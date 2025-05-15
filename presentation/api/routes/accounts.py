@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
-from domain.entities.account import SavingsAccount, CheckingAccount
+from domain.entities.account import SavingsAccount, CheckingAccount, AccountType  # Import AccountType
 from application.services.account_creation_services import AccountCreationService
 from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
 
@@ -20,24 +20,20 @@ class AccountResponse(BaseModel):
     account_type: str
     balance: float
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=AccountResponse)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create_account(
     request: CreateAccountRequest,
-    service: AccountCreationService = Depends(get_account_creation_service)  # Now defined above
+    service: AccountCreationService = Depends(get_account_creation_service)
 ):
     try:
-        account_class = (
-            SavingsAccount if request.account_type == "SAVINGS" 
-            else CheckingAccount
-        )
-        account_id = service.create_account(account_class, request.initial_deposit)
-        account = service.account_repo.get_account_by_id(account_id)
-        return {
-            "account_id": account_id,
-            "account_type": account.account_type,
-            "balance": account.balance
-        }
+        # Validate account type
+        if request.account_type not in [AccountType.SAVINGS, AccountType.CHECKING]:
+            raise ValueError(f"Unsupported account type: {request.account_type}")
+
+        # Create the account
+        account_id = service.create_account(request.account_type, request.initial_deposit)
+        return {"account_id": account_id}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
+
 
