@@ -6,6 +6,8 @@ class LimitService:
 
     def check_limit(self, account_id: str, amount: float) -> bool:
         account = self.account_repo.get_account_by_id(account_id)
+        if not account:
+            raise ValueError(f"Account {account_id} not found")
         if account.limit.needs_reset():
             account.limit.reset()
-        return account.limit.is_exceeded(account.current_usage + amount)
+        return not account.limit.is_exceeded(account.balance + amount)

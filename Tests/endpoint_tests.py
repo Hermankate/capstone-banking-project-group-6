@@ -43,13 +43,29 @@ def test_get_transactions(account_id: str):
     print("Transactions Response:", response.json())
 
 def test_transfer_funds():
-    # Test transferring funds between accounts
-    payload = {
-        "sourceAccountId": "acc1",
-        "destinationAccountId": "acc2",
+    # Create source account
+    source_payload = {
+        "account_type": "SAVINGS",
+        "initial_deposit": 200.0
+    }
+    source_response = requests.post(f"{BASE_URL}/accounts", json=source_payload)
+    source_account_id = source_response.json()["account_id"]
+
+    # Create destination account
+    destination_payload = {
+        "account_type": "CHECKING",
+        "initial_deposit": 50.0
+    }
+    destination_response = requests.post(f"{BASE_URL}/accounts", json=destination_payload)
+    destination_account_id = destination_response.json()["account_id"]
+
+    # Perform transfer
+    transfer_payload = {
+        "source_account_id": source_account_id,
+        "destination_account_id": destination_account_id,
         "amount": 100.0
     }
-    response = requests.post(f"{BASE_URL}/accounts/transfer", json=payload)
+    response = requests.post(f"{BASE_URL}/transfers", json=transfer_payload)
     print("Transfer Funds Response:", response.json())
     assert response.status_code == 200
 

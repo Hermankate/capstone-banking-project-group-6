@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
+from domain.entities.limit import TransactionLimit, LimitType
 
 class AccountType:
     SAVINGS = "SAVINGS"
@@ -23,6 +24,7 @@ class Account(ABC):
         self.account_type = account_type
         self.creation_date = datetime.now()
         self.interest_strategy = None
+        self.limit = TransactionLimit(LimitType.DAILY, max_amount=1000.0)  # Default limit
 
     def deposit(self, amount: float):
         if amount <= 0:

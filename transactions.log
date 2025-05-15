@@ -1,1 +1,8 @@
 INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
+INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
+INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
+INFO:root:WITHDRAW: Amount: 20.0, Source: 1, Destination: N/A
+INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
+INFO:root:WITHDRAW: Amount: 20.0, Source: 1, Destination: N/A
+INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
+INFO:root:WITHDRAW: Amount: 20.0, Source: 1, Destination: N/A
