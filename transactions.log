@@ -1,8 +1,46 @@
-INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
-INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
-INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
-INFO:root:WITHDRAW: Amount: 20.0, Source: 1, Destination: N/A
-INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
-INFO:root:WITHDRAW: Amount: 20.0, Source: 1, Destination: N/A
-INFO:root:DEPOSIT: Amount: 50.0, Source: 1, Destination: N/A
-INFO:root:WITHDRAW: Amount: 20.0, Source: 1, Destination: N/A
+from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
+from application.services.statement_service import StatementService
+from infrastructure.exporters.statement_exporter import CSVStatementExporter, PDFStatementExporter
+import os  # Import os to handle directory creation
+from application.interfaces.account_repository import AccountRepository
+from application.interfaces.transaction_repository import TransactionRepository
+
+router = APIRouter(prefix="/statements", tags=["Statements"])
+
+class GenerateStatementRequest(BaseModel):
+    account_id: str
+    month: int
+    year: int
+    format: str  # "csv" or "pdf"
+
+# Use the repositories initialized in main.py
+def get_statement_service(
+    account_repo: AccountRepository = Depends(),
+    transaction_repo: TransactionRepository = Depends()) -> StatementService:
+    return StatementService(account_repo, transaction_repo)
+
+@router.post("/generate")
+def generate_statement(
+    request: GenerateStatementRequest,
+    service: StatementService = Depends(get_statement_service)):
+    try:
+        # Ensure the directory exists
+        os.makedirs("statements", exist_ok=True)
+        # Generate the statement
+        statement = service.generate_statement(request.account_id, request.month, request.year)
+        # Export the statement
+        if request.format == "csv":
+            exporter = CSVStatementExporter()
+            file_path = f"statements/{request.account_id}_{request.month}_{request.year}.csv"
+        elif request.format == "pdf":
+            exporter = PDFStatementExporter()
+            file_path = f"statements/{request.account_id}_{request.month}_{request.year}.pdf"
+        else:
+            raise ValueError("Invalid format. Use 'csv' or 'pdf'.")
+        exporter.export(statement, file_path)
+        return {"file_path": file_path}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))  # Include the error message for debugging

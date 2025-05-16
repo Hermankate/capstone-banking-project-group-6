@@ -1,0 +1,63 @@
+from application.services.account_creation_services import AccountCreationService
+from domain.entities.account import AccountType
+from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
+import pytest
+from domain.entities.account import SavingsAccount, CheckingAccount, AccountType
+
+import pytest
+from application.services.account_creation_services import AccountCreationService
+from infrastructure.repositories.account_repository_impl import InMemoryAccountRepository
+from domain.entities.account import AccountType
+
+def test_create_savings_account_valid():
+    repo = InMemoryAccountRepository()
+    service = AccountCreationService(repo)
+    acc_id = service.create_account(AccountType.SAVINGS, 200)
+    acc = repo.get_account_by_id(acc_id)
+    assert acc.balance == 200
+
+def test_create_savings_account_insufficient_deposit():
+    repo = InMemoryAccountRepository()
+    service = AccountCreationService(repo)
+    with pytest.raises(ValueError):
+        service.create_account(AccountType.SAVINGS, 50)
+
+def test_create_savings_account_with_insufficient_initial_deposit():
+    repo = InMemoryAccountRepository()
+    service = AccountCreationService(repo)
+    try:
+        service.create_account(AccountType.SAVINGS, 50.0)
+    except ValueError as e:
+        assert str(e) == "Minimum initial deposit for savings is 100.0"
+
+def test_create_valid_checking_account():
+    repo = InMemoryAccountRepository()
+    service = AccountCreationService(repo)
+    account_id = service.create_account(AccountType.CHECKING, 50.0)
+    account = repo.get_account_by_id(account_id)
+    assert account.balance == 50.0
+
+
+def test_savings_account_withdraw_min_balance():
+    acc = SavingsAccount("id1", AccountType.SAVINGS, balance=150)
+    acc.withdraw(40)
+    assert acc.balance == 110
+    with pytest.raises(ValueError):
+        acc.withdraw(20)  # Would go below min balance
+
+def test_checking_account_overdraft():
+    acc = CheckingAccount("id2", AccountType.CHECKING, balance=0)
+    acc.withdraw(400)
+    assert acc.balance == -400
+    with pytest.raises(ValueError):
+        acc.withdraw(200)  # Exceeds overdraft limit
+
+def test_deposit_positive():
+    acc = SavingsAccount("id3", AccountType.SAVINGS, balance=100)
+    acc.deposit(50)
+    assert acc.balance == 150
+
+def test_deposit_negative():
+    acc = SavingsAccount("id4", AccountType.SAVINGS, balance=100)
+    with pytest.raises(ValueError):
+        acc.deposit(-10)

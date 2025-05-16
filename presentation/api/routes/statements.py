@@ -1,44 +1,55 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from datetime import datetime
+from application.services.interest_service import InterestService
 from application.services.statement_service import StatementService
-from application.exporters.pdf_statement_exporter import PDFStatementExporter  # Import PDF exporter
-from application.exporters.csv_statement_exporter import CSVStatementExporter  # Import CSV exporter
-from application.dependencies import get_statement_service  # Import get_statement_service
-import os  # Import os to handle directory creation
+from fastapi.responses import FileResponse
 
-router = APIRouter(prefix="/statements")
+router = APIRouter(prefix="/accounts/{account_id}")
+
+class InterestResponse(BaseModel):
+    interest: float
+    new_balance: float
 
 class StatementRequest(BaseModel):
-    account_id: str
     month: int
     year: int
-    format: str  # "pdf" or "csv"
+    format: str
 
-@router.post("/generate")
+def get_interest_service():
+    pass
+
+def get_statement_service():
+    pass
+
+@router.post("/interest/calculate", response_model=InterestResponse)
+def calculate_interest(
+    account_id: str,
+    service: InterestService = Depends(get_interest_service)
+):
+    try:
+        interest = service.calculate_interest(account_id)
+        account = service.account_repo.get_account_by_id(account_id)
+        return {
+            "interest": round(interest, 2),
+            "new_balance": round(account.balance, 2)
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/statement")
 def generate_statement(
-    request: StatementRequest,
+    account_id: str,
+    month: int,
+    year: int,
+    format: str,
     service: StatementService = Depends(get_statement_service)
 ):
     try:
-        # Validate the format
-        if request.format not in ["pdf", "csv"]:
-            raise HTTPException(status_code=400, detail="Invalid format. Use 'pdf' or 'csv'.")
-
-        # Generate the statement
-        statement = service.generate_statement(request.account_id, request.month, request.year)
-        exporter = PDFStatementExporter() if request.format == "pdf" else CSVStatementExporter()
-        
-        # Ensure the 'statements' directory exists
-        os.makedirs("statements", exist_ok=True)
-        
-        # Define the file path
-        file_path = f"statements/{request.account_id}_{request.month}_{request.year}.{request.format}"
-        
-        # Export the statement
-        exporter.export(statement, file_path)
-        
-        return {"message": f"Statement generated successfully at {file_path}"}
+        file_path = service.generate_statement(account_id, month, year, format)
+        return FileResponse(file_path, media_type="application/octet-stream")
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
